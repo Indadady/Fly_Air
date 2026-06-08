@@ -164,7 +164,7 @@
             </div>
 
             <div class="flex items-center justify-between bg-blue-50 p-3 rounded border border-blue-200 mb-5">
-                <span class="text-[12px] font-bold text-blue-800"><i class="fas fa-save mr-1"></i>현재 폼 데이터 백업</span>
+                <span class="text-[12px] font-bold text-blue-800"><i class="fas fa-save mr-1"></i>작성 데이터 저장 / 열기</span>
                 <div class="flex gap-1">
                     <button onclick="saveTemplate()" class="px-3 py-1.5 bg-white border border-blue-300 text-blue-700 rounded text-xs font-bold hover:bg-blue-100 transition shadow-sm">다른이름 저장</button>
                     <button onclick="document.getElementById('file-upload').click()" class="px-3 py-1.5 bg-blue-600 text-white border border-blue-600 rounded text-xs font-bold hover:bg-blue-700 transition shadow-sm">열기</button>
@@ -198,13 +198,6 @@
 
             <!-- ===== FORM: 데포짓 공문 ===== -->
             <div id="form-deposit" class="block">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
-                    <select id="preset-select-deposit" class="w-full border border-gray-300 rounded p-2 text-sm font-medium bg-white" onchange="applyPresetTemplate(this.value)">
-                        <option value="fly_cz">CZ (남방항공) 데포짓 청구 샘플</option>
-                        <option value="blank_deposit">--- 새 양식 ---</option>
-                    </select>
-                </div>
                 <div class="space-y-4">
                     <div class="bg-sky-50 p-4 rounded border border-sky-200">
                         <h3 class="text-sm font-bold text-sky-900 mb-3">수발신 및 기본 정보</h3>
@@ -252,13 +245,6 @@
 
             <!-- ===== FORM: 환불영수증(정식) ===== -->
             <div id="form-refund-full" class="hidden">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
-                    <select id="preset-select-refund-full" class="w-full border border-gray-300 rounded p-2 text-sm font-medium bg-white" onchange="applyPresetTemplate(this.value)">
-                        <option value="rf_sabuk">사북고 대만 (KE / 취소수수료 증명서)</option>
-                        <option value="blank_refund_full">--- 새 양식 ---</option>
-                    </select>
-                </div>
                 <div class="space-y-4">
                     <div class="bg-orange-50 p-4 rounded border border-orange-200">
                         <h3 class="text-sm font-bold text-orange-900 mb-3">기본 정보</h3>
@@ -302,13 +288,6 @@
 
             <!-- ===== FORM: 환불내역서(내부) ===== -->
             <div id="form-refund-simple" class="hidden">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
-                    <select id="preset-select-refund-simple" class="w-full border border-gray-300 rounded p-2 text-sm font-medium bg-white" onchange="applyPresetTemplate(this.value)">
-                        <option value="rs_sabuk">사북고 대만 (KE 환불금 안내 약식)</option>
-                        <option value="blank_refund_simple">--- 새 양식 ---</option>
-                    </select>
-                </div>
                 <div class="space-y-4">
                     <div class="bg-sky-50 p-4 rounded border border-sky-200">
                         <h3 class="text-sm font-bold text-sky-900 mb-3">승객 · 예약 정보</h3>
@@ -349,13 +328,6 @@
 
             <!-- ===== FORM: 항공운임증명서 ===== -->
             <div id="form-fare" class="hidden">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
-                    <select id="preset-select-fare" class="w-full border border-gray-300 rounded p-2 text-sm font-medium bg-white" onchange="applyPresetTemplate(this.value)">
-                        <option value="fa_sample">진에어 LJ 정선군청 샘플</option>
-                        <option value="blank_fare">--- 새 양식 ---</option>
-                    </select>
-                </div>
                 <div class="space-y-4">
                     <div class="bg-sky-50 p-4 rounded border border-sky-200">
                         <h3 class="text-sm font-bold text-sky-900 mb-3">문서 기본 정보</h3>
@@ -677,7 +649,6 @@
                     <div class="pnr-text flex-1" id="out_fa_pnr_raw"></div>
                 </div>
                 <div class="mt-auto pt-2 pr-8 shrink-0 fu-signature-footer">
-                    <img data-fly-logo="clean" alt="FLY UNITY" class="logo-doc-clean object-contain">
                     <div class="fu-signature-line">
                         (주) 플라이 유니티
                         <span class="fu-stamp-slot">
@@ -700,64 +671,6 @@
 
         let currentDocType = 'deposit';
         let feeRowId = 0;
-
-        const PRESET_TEMPLATES = {
-            fly_cz: {
-                docType: "deposit", date: "2026-03-27",
-                fly_receiver: "강릉 뉴동방관광", fly_ref: "담당자님", fly_sender: "대표",
-                fly_airline: "CZ", fly_title: "2026.06.17(수)~21(일) CZ 데포짓 청구 건",
-                fly_deposit: "100,000", fly_deposit_due: "2026년04월 01일(수) 15시까지", fly_hurdle: "80",
-                fly_remarks: "예) 2026년 05월 17일까지 명단 50% 제출 조건입니다.",
-                fly_schedule: "0.20GROUPAM/CDCEGC NM0 PH2L34/CZ\n1. CZ340 GWE17JUN ICNCAN HK19 0940 1230 E 1 T2\n2. CZ3061 GSU21JUN CANICN HK19 1050 1525 E T21",
-                fly_fare: "350,000", fly_tax: "120,000", fly_pax: "19",
-                fly_account: "우리은행 1005-000-000000 주식회사 플라이유니티"
-            },
-            rf_sabuk: {
-                docType: "refund-full", date: "2025-05-26",
-                rf_to: "사북고등학교",
-                rf_depdate: "2026-05-26",
-                rf_issuer: "(주)플라이유니티",
-                rf_passengers: "1.JUNG/YUHWAN MR\n2.LEE/DONGYUN MR",
-                rf_pnr: "FJQYXK, FXYGON",
-                rf_routing: "인천(ICN) / 타이페이(TPE)",
-                rf_resinfo: "1.JUNG/YUHWAN MR, 2.LEE/DONGYUN MR\n3 KE2021 U 26MAY 2 ICNTPE HK1 1030 1210 26MAY E\n4 KE2022 U 29MAY 5 TPEICN HK1 1320 1650 29MAY E",
-                rf_notes: "상기 수수료는 항공사 규정에 따라 부과된 금액이며, 항공권 발권 후 취소 요청 시 발생한 실제 비용입니다.",
-                feeItems: [
-                    { desc: "Economy Class 항공사 취소 수수료", unit: "160,000", qty: "2" },
-                    { desc: "여행사 수수료", unit: "20,000", qty: "2" }
-                ]
-            },
-            rs_sabuk: {
-                docType: "refund-simple", date: "2025-05-26",
-                rs_passenger: "JUNG/YUHWAN MR, LEE/DONGYUN MR",
-                rs_pnr: "FJQYXK, FXYGON",
-                rs_depdate: "2026-05-26",
-                rs_routing: "ICN - TPE - ICN",
-                rs_airline: "대한항공 (KE)",
-                rs_paid_fare: "1,200,000",
-                rs_paid_tax: "280,000",
-                rs_airline_penalty: "320,000",
-                rs_agency_fee: "40,000",
-                rs_refund_amount: "1,120,000",
-                rs_remark: ""
-            },
-            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_hurdle: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_pax: "", fly_account: "" },
-            blank_refund_full: { docType: "refund-full", date: "", rf_to: "", rf_depdate: "", rf_issuer: "(주)플라이유니티", rf_passengers: "", rf_pnr: "", rf_routing: "", rf_resinfo: "", rf_notes: "", feeItems: [{ desc: "", unit: "", qty: "1" }] },
-            blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" },
-            fa_sample: {
-                docType: "fare", date: "2026-03-27",
-                fa_receiver: "정선군청 환경과", fa_depdate: "2026-05-12",
-                fa_paxname: "김종범 (KIM/JONGBEOM)외 5명", fa_pnr: "(LJ) EXSO7E",
-                fa_routing: "인천(ICN) - 기타큐슈(KKJ) 왕복",
-                fa_pnr_raw: "EXSO7E\n1.KIM/JONGBEOM MR 2.JEON/CHANYEONG MR 3.YU/JONGDEOG MR\n4.JEON/YEONGPYO MR 5.PARK/CHUNGIN MR 6.LEE/JINHO MR(영문)\n\n7 LJ 349 A 12MAY 2 ICNKKJ HK6 1545 1715 12MAY E LJ/PB3LG2\n8 LJ 350 Y 15MAY 5 KKJICN HK6 1815 1940 15MAY E LJ/PB3LG2",
-                fa_notes: "상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.",
-                faFares: [
-                    { item: "Economy Class", desc: "인천(ICN) - 기타큐슈(KKJ) 왕복", price: 247600, qty: 6 },
-                    { item: "Economy Class", desc: "발권수수료", price: 20000, qty: 6 }
-                ]
-            },
-            blank_fare: { docType: "fare", date: "", fa_receiver: "", fa_depdate: "", fa_paxname: "", fa_pnr: "", fa_routing: "", fa_pnr_raw: "", fa_notes: "", faFares: [{ item: "Economy Class", desc: "", price: 0, qty: 1 }] }
-        };
 
         function getStampSettings() {
             return {
@@ -1178,23 +1091,6 @@
             calcFareTable();
         }
 
-        function applyPresetTemplate(templateKey) {
-            if (templateKey.startsWith('blank')) return;
-            const data = PRESET_TEMPLATES[templateKey];
-            if (!data) return;
-            if (data.docType) switchDocType(data.docType);
-            if (data.feeItems) setFeeItems(data.feeItems);
-            if (data.faFares) setFaFares(data.faFares);
-            Object.keys(data).forEach(key => {
-                if (key === 'docType' || key === 'feeItems' || key === 'faFares') return;
-                let el = document.getElementById(`in_${key}`);
-                if (!el && key === 'date') el = document.getElementById('common_date');
-                if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
-            });
-            const names = { deposit: '데포짓 공문', 'refund-full': '환불영수증', 'refund-simple': '환불내역서(내부)', fare: '항공운임증명서' };
-            showToast(`${names[data.docType] || ''} 템플릿 적용 완료!`);
-        }
-
         async function saveTemplate() {
             const data = { docType: currentDocType, date: document.getElementById('common_date').value, stampSettings: getStampSettings() };
             const formMap = { deposit: '#form-deposit', 'refund-full': '#form-refund-full', 'refund-simple': '#form-refund-simple', fare: '#form-fare' };
@@ -1250,10 +1146,11 @@
                     if (data.feeItems) setFeeItems(data.feeItems);
                     if (data.faFares) setFaFares(data.faFares);
                     Object.keys(data).forEach(key => {
-                        if (key === 'docType' || key === 'feeItems' || key === 'faFares') return;
+                        if (['docType', 'feeItems', 'faFares', 'stampSettings'].includes(key)) return;
                         const el = document.getElementById(`in_${key}`);
                         if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
                     });
+                    updateAllPreviews();
                     showToast('파일을 불러왔습니다.');
                 } catch (err) {
                     showToast('지원하지 않는 형식입니다.', false);
@@ -1302,12 +1199,9 @@
             setStampControlInputs(loadStampSettingsFromStorage());
             document.getElementById('common_date').value = new Date().toISOString().slice(0, 10);
             setFeeItems([{ desc: '', unit: '', qty: '1' }]);
-            setFaFares([
-                { item: 'Economy Class', desc: '인천(ICN) - 기타큐슈(KKJ) 왕복', price: 247600, qty: 6 },
-                { item: 'Economy Class', desc: '발권수수료', price: 20000, qty: 6 }
-            ]);
+            setFaFares([{ item: 'Economy Class', desc: '', price: 0, qty: 1 }]);
             switchDocType('deposit');
-            applyPresetTemplate('fly_cz');
+            updateAllPreviews();
         };
     </script>
 </body>
