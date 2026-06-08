@@ -59,9 +59,22 @@
         .toast-show { animation: fadeInOut 3s forwards; }
         .fu-signature-footer { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
         .fu-signature-line { font-size: 16px; font-weight: 900; letter-spacing: 0.02em; color: #1f2937; white-space: nowrap; }
-        .fu-stamp-slot { position: relative; display: inline-block; margin-left: 2px; }
-        .fu-stamp-slot .stamp-label { position: relative; z-index: 2; }
-        .fu-stamp-slot .stamp-img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); width: 58px; height: 58px; mix-blend-mode: multiply; opacity: 0.95; z-index: 3; pointer-events: none; }
+        .logo-nav { height: 44px; }
+        .logo-doc-square { height: 80px; }
+        .logo-doc-clean { height: 52px; }
+        .fu-stamp-slot { position: relative; display: inline-block; margin-left: 4px; min-width: 3.5em; min-height: 1.4em; vertical-align: middle; }
+        .fu-stamp-slot .stamp-label { position: relative; z-index: 2; display: inline-block; padding: 0 2px; }
+        .stamp-img {
+            position: absolute; left: 50%; top: 50%;
+            width: calc(var(--stamp-size, 64) * 1px);
+            height: calc(var(--stamp-size, 64) * 1px);
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            opacity: 0.95;
+            z-index: 3;
+            pointer-events: none;
+            transform: translate(calc(-50% + var(--stamp-off-x, 0px)), calc(-50% + var(--stamp-off-y, -2px)));
+        }
         #main-nav .doc-tab { padding: 7px 10px; font-size: 12px; }
         .font-roboto { font-family: 'Roboto', sans-serif; }
         .info-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; text-align: left; border-top: 2px solid #1e293b; }
@@ -102,7 +115,7 @@
 
     <nav id="main-nav" class="bg-white border-b border-gray-200 text-gray-800 px-4 py-3 flex justify-between items-center shadow-sm no-print z-10 shrink-0 gap-3 flex-wrap">
         <div class="flex items-center gap-2 shrink-0">
-            <img id="nav-logo" src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+            <img id="nav-logo" src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="logo-nav object-contain">
             <h1 class="text-sm font-bold text-sky-900 border-l-2 border-sky-200 pl-3 hidden sm:block">Fly Air</h1>
         </div>
         <div class="flex gap-1.5 flex-wrap justify-center flex-1">
@@ -141,6 +154,26 @@
                     <button onclick="saveTemplate()" class="px-3 py-1.5 bg-white border border-blue-300 text-blue-700 rounded text-xs font-bold hover:bg-blue-100 transition shadow-sm">다른이름 저장</button>
                     <button onclick="document.getElementById('file-upload').click()" class="px-3 py-1.5 bg-blue-600 text-white border border-blue-600 rounded text-xs font-bold hover:bg-blue-700 transition shadow-sm">열기</button>
                     <input type="file" id="file-upload" class="hidden" accept=".json" onchange="loadTemplate(event)">
+                </div>
+            </div>
+
+            <div id="stamp-controls" class="mb-5 bg-amber-50 p-4 rounded border border-amber-200">
+                <h3 class="text-sm font-bold text-amber-900 mb-3"><i class="fas fa-stamp mr-1"></i>직인 크기·위치 조정</h3>
+                <p class="text-[10px] text-amber-700 mb-3 leading-relaxed">모든 문서 직인에 공통 적용됩니다. 설정은 브라우저에 자동 저장됩니다.</p>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-gray-700 mb-1"><label for="stamp_size">크기</label><span id="lbl_stamp_size">64px</span></div>
+                        <input type="range" id="stamp_size" class="w-full accent-amber-600" min="36" max="96" value="64" oninput="onStampControlChange()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-gray-700 mb-1"><label for="stamp_offset_x">가로 (좌 ← → 우)</label><span id="lbl_stamp_x">0px</span></div>
+                        <input type="range" id="stamp_offset_x" class="w-full accent-amber-600" min="-40" max="40" value="0" oninput="onStampControlChange()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-gray-700 mb-1"><label for="stamp_offset_y">세로 (↑ ↓)</label><span id="lbl_stamp_y">-2px</span></div>
+                        <input type="range" id="stamp_offset_y" class="w-full accent-amber-600" min="-40" max="40" value="-2" oninput="onStampControlChange()">
+                    </div>
+                    <button type="button" onclick="resetStampSettings()" class="w-full py-1.5 bg-white border border-amber-300 rounded text-xs font-bold text-amber-800 hover:bg-amber-100 transition">기본값 복원</button>
                 </div>
             </div>
 
@@ -394,18 +427,21 @@
                         <p class="font-bold mt-1">예치금 환급 규정을 꼭 확인하신 후 송금 부탁드리며 송금 후 연락 주시기 바랍니다.</p>
                     </div>
                 </div>
-                <div class="mt-auto pt-4 pb-4 flex justify-end items-center pr-[50px] relative shrink-0 border-t-[2px] border-sky-900 mt-4">
-                    <div class="text-[18px] font-black tracking-widest text-gray-800 relative z-10">
-                        (주)플라이유니티 대표이사 <span class="ml-2 font-bold text-[16px]">(인)</span>
+                <div class="mt-auto pt-4 pb-4 flex justify-end pr-[50px] shrink-0 border-t-[2px] border-sky-900 mt-4">
+                    <div class="text-[18px] font-black tracking-widest text-gray-800">
+                        (주)플라이유니티 대표이사
+                        <span class="fu-stamp-slot ml-1">
+                            <span class="stamp-label text-[16px] font-bold">(인)</span>
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" alt="직인" class="stamp-img">
+                        </span>
                     </div>
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" alt="직인" class="absolute right-[30px] top-[2px] w-[60px] h-[60px] mix-blend-multiply opacity-95 z-20">
                 </div>
             </div>
 
             <!-- PAGE: 환불영수증 -->
             <div class="a4-page page-refund-full hidden-page" id="page-refund-full">
                 <div class="mb-4 shrink-0">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" alt="FLY UNITY" class="h-12 object-contain">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" alt="FLY UNITY" class="logo-doc-square object-contain">
                 </div>
 
                 <div class="text-center mb-5 shrink-0">
@@ -460,7 +496,6 @@
                 </div>
 
                 <div class="mt-auto pt-6 pr-8 shrink-0 fu-signature-footer">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
                     <div class="text-right text-[12px] text-gray-600 leading-relaxed">
                         <div><span class="font-bold text-gray-500">Issued by</span> <span id="out_rf_issuer_footer" class="font-bold text-gray-800"></span></div>
                         <div><span class="font-bold text-gray-500">발행일</span> <span class="out_common_date font-bold text-gray-800"></span></div>
@@ -545,7 +580,7 @@
                 </div>
 
                 <div class="mt-auto border-t-2 border-[#003478] pt-5 pr-4 shrink-0 fu-signature-footer">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="logo-doc-clean object-contain">
                     <div class="fu-signature-line">
                         (주) 플라이 유니티
                         <span class="fu-stamp-slot">
@@ -559,7 +594,7 @@
             <!-- PAGE: 항공운임증명서 -->
             <div class="a4-page page-fare hidden-page" id="page-fare">
                 <div class="flex justify-between items-start mb-2 shrink-0">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" class="h-12 object-contain" alt="FLY UNITY">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" class="logo-doc-square object-contain" alt="FLY UNITY">
                     <div class="text-right text-[8.5pt] text-slate-500 font-roboto">
                         Date : <span id="out_fa_issue_dot" class="font-bold"></span><br>
                         Ref No : FU-FARE-<span id="out_fa_ref_short" class="font-bold"></span>
@@ -623,7 +658,7 @@
                     <div class="pnr-text flex-1" id="out_fa_pnr_raw"></div>
                 </div>
                 <div class="mt-auto pt-2 pr-8 shrink-0 fu-signature-footer">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="logo-doc-clean object-contain">
                     <div class="text-right text-[12px] text-gray-600 leading-relaxed">
                         <div><span class="font-bold text-gray-500">Issued by</span> <span class="font-bold text-gray-800">(주)플라이유니티</span></div>
                         <div><span class="font-bold text-gray-500">발행일</span> <span id="out_fa_issue_kor" class="font-bold text-gray-800"></span></div>
@@ -645,6 +680,8 @@
         const FLY_LOGO_CLEAN = "https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000";
         const FLY_LOGO_SQUARE = "https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw";
         const FLY_STAMP = "https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200";
+        const STAMP_STORAGE_KEY = 'fly_air_stamp_settings';
+        const STAMP_DEFAULTS = { size: 64, offsetX: 0, offsetY: -2 };
 
         let currentDocType = 'deposit';
         let feeRowId = 0;
@@ -706,6 +743,68 @@
             },
             blank_fare: { docType: "fare", date: "", fa_receiver: "", fa_depdate: "", fa_paxname: "", fa_pnr: "", fa_routing: "", fa_pnr_raw: "", fa_notes: "", faFares: [{ item: "Economy Class", desc: "", price: 0, qty: 1 }] }
         };
+
+        function getStampSettings() {
+            return {
+                size: Number(document.getElementById('stamp_size')?.value ?? STAMP_DEFAULTS.size),
+                offsetX: Number(document.getElementById('stamp_offset_x')?.value ?? STAMP_DEFAULTS.offsetX),
+                offsetY: Number(document.getElementById('stamp_offset_y')?.value ?? STAMP_DEFAULTS.offsetY)
+            };
+        }
+
+        function applyStampSettings(settings = getStampSettings()) {
+            const root = document.documentElement;
+            root.style.setProperty('--stamp-size', settings.size);
+            root.style.setProperty('--stamp-off-x', `${settings.offsetX}px`);
+            root.style.setProperty('--stamp-off-y', `${settings.offsetY}px`);
+            const lblSize = document.getElementById('lbl_stamp_size');
+            const lblX = document.getElementById('lbl_stamp_x');
+            const lblY = document.getElementById('lbl_stamp_y');
+            if (lblSize) lblSize.innerText = `${settings.size}px`;
+            if (lblX) lblX.innerText = `${settings.offsetX}px`;
+            if (lblY) lblY.innerText = `${settings.offsetY}px`;
+        }
+
+        function saveStampSettingsToStorage(settings = getStampSettings()) {
+            try { localStorage.setItem(STAMP_STORAGE_KEY, JSON.stringify(settings)); } catch (e) {}
+        }
+
+        function loadStampSettingsFromStorage() {
+            try {
+                const raw = localStorage.getItem(STAMP_STORAGE_KEY);
+                if (!raw) return { ...STAMP_DEFAULTS };
+                const parsed = JSON.parse(raw);
+                return { ...STAMP_DEFAULTS, ...parsed };
+            } catch (e) {
+                return { ...STAMP_DEFAULTS };
+            }
+        }
+
+        function setStampControlInputs(settings) {
+            const sizeEl = document.getElementById('stamp_size');
+            const xEl = document.getElementById('stamp_offset_x');
+            const yEl = document.getElementById('stamp_offset_y');
+            if (sizeEl) sizeEl.value = settings.size;
+            if (xEl) xEl.value = settings.offsetX;
+            if (yEl) yEl.value = settings.offsetY;
+            applyStampSettings(settings);
+        }
+
+        function onStampControlChange() {
+            const settings = getStampSettings();
+            applyStampSettings(settings);
+            saveStampSettingsToStorage(settings);
+        }
+
+        function resetStampSettings() {
+            setStampControlInputs({ ...STAMP_DEFAULTS });
+            saveStampSettingsToStorage(STAMP_DEFAULTS);
+            showToast('직인 설정을 기본값으로 복원했습니다.');
+        }
+
+        function initStampImages() {
+            document.querySelectorAll('.stamp-img').forEach(img => { img.src = FLY_STAMP; });
+        }
 
         function showToast(message, isSuccess = true) {
             const container = document.getElementById('toast-container');
@@ -1074,7 +1173,7 @@
         }
 
         async function saveTemplate() {
-            const data = { docType: currentDocType, date: document.getElementById('common_date').value };
+            const data = { docType: currentDocType, date: document.getElementById('common_date').value, stampSettings: getStampSettings() };
             const formMap = { deposit: '#form-deposit', 'refund-full': '#form-refund-full', 'refund-simple': '#form-refund-simple', fare: '#form-fare' };
             document.querySelectorAll(`${formMap[currentDocType]} input, ${formMap[currentDocType]} textarea`).forEach(el => {
                 data[el.id.replace('in_', '')] = el.value;
@@ -1120,6 +1219,11 @@
                     const data = JSON.parse(e.target.result);
                     if (data.docType) switchDocType(data.docType);
                     if (data.date) document.getElementById('common_date').value = data.date;
+                    if (data.stampSettings) {
+                        const merged = { ...STAMP_DEFAULTS, ...data.stampSettings };
+                        setStampControlInputs(merged);
+                        saveStampSettingsToStorage(merged);
+                    }
                     if (data.feeItems) setFeeItems(data.feeItems);
                     if (data.faFares) setFaFares(data.faFares);
                     Object.keys(data).forEach(key => {
@@ -1171,6 +1275,9 @@
         });
 
         window.onload = function() {
+            initStampImages();
+            setStampControlInputs(loadStampSettingsFromStorage());
+            document.getElementById('nav-logo').src = FLY_LOGO_CLEAN;
             document.getElementById('common_date').value = new Date().toISOString().slice(0, 10);
             setFeeItems([{ desc: '', unit: '', qty: '1' }]);
             setFaFares([
