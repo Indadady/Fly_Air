@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fly Air — 플라이유니티 항공 문서 제너레이터</title>
+    <title>Fly Air — 플라이유니티 항공 통합 문서</title>
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Fly Air — 플라이유니티 항공 문서 제너레이터">
-    <meta property="og:description" content="항공 데포짓 공문 · 환불영수증(정식/약식) 통합 제작">
+    <meta property="og:title" content="Fly Air — 플라이유니티 항공 통합 문서">
+    <meta property="og:description" content="데포짓공문 · 환불영수증 · 환불내역서 · 항공운임증명서 통합 제작">
     <meta property="og:image" content="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw">
     <meta property="og:image:alt" content="FLY UNITY 로고">
     <meta name="twitter:card" content="summary_large_image">
@@ -22,7 +22,7 @@
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -62,6 +62,25 @@
         .fu-stamp-slot { position: relative; display: inline-block; margin-left: 2px; }
         .fu-stamp-slot .stamp-label { position: relative; z-index: 2; }
         .fu-stamp-slot .stamp-img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); width: 58px; height: 58px; mix-blend-mode: multiply; opacity: 0.95; z-index: 3; pointer-events: none; }
+        #main-nav .doc-tab { padding: 7px 10px; font-size: 12px; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        .info-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; text-align: left; border-top: 2px solid #1e293b; }
+        .info-table th { padding: 4px 10px; font-weight: bold; background: #f8fafc; color: #334155; border-bottom: 1px solid #cbd5e1; width: 25%; }
+        .info-table td { padding: 4px 10px; border-bottom: 1px solid #cbd5e1; color: #0f172a; }
+        .calc-table { width: 100%; border-collapse: collapse; font-size: 9pt; text-align: center; border-top: 2px solid #1e293b; border-bottom: 2px solid #1e293b; table-layout: fixed; }
+        .calc-table th { padding: 4px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc; color: #334155; }
+        .calc-table td { padding: 4px; border: 1px solid #cbd5e1; line-height: 1.3; }
+        .pnr-text { font-family: 'Courier New', monospace; font-size: 8pt; line-height: 1.4; color: #334155; white-space: pre-wrap; word-break: break-all; }
+        .doc-title-eng { font-size: 20pt; font-weight: 900; color: #1e293b; text-align: center; letter-spacing: 2px; margin-bottom: 0; }
+        .doc-title-kor { font-size: 12pt; font-weight: 700; color: #475569; text-align: center; letter-spacing: 10px; margin-bottom: 2mm; }
+        [contenteditable="true"] { outline: none; padding: 2px 4px; min-height: 1em; border-radius: 2px; }
+        [contenteditable="true"]:hover { background: #fefce8; cursor: text; }
+        [contenteditable="true"]:focus { background: #fffbeb; box-shadow: inset 0 0 0 1px #3b82f6; }
+        .row-ctrl { position: absolute; right: -28px; top: 50%; transform: translateY(-50%); opacity: 0.3; z-index: 20; }
+        tr:hover .row-ctrl { opacity: 1; }
+        @media print {
+            .row-ctrl, [contenteditable="true"]:hover, [contenteditable="true"]:focus { box-shadow: none !important; background: transparent !important; }
+        }
         @media print {
             html, body { height: auto !important; overflow: visible !important; background: white !important; display: block !important; }
             body.h-screen { height: auto !important; }
@@ -83,18 +102,21 @@
 
     <nav id="main-nav" class="bg-white border-b border-gray-200 text-gray-800 px-4 py-3 flex justify-between items-center shadow-sm no-print z-10 shrink-0 gap-3 flex-wrap">
         <div class="flex items-center gap-2 shrink-0">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhEFpULeLVDfwoBXtetHc7RKdxqUT_BAEnTz9ZbeFDZrJKHEMK7d-jxaGFcT_x-Zd25Ha2DmhJ62-RiL3XClK1tzWkMLOMt-2boTODKJY0reo5PjPaAClELiXDOkmRlyM1DruP58WPJTJyJPZpVP7qrn-llaZ-E34U2PJUi4N9puunD5OY2ia1J2hOAvl8=w320-h57" alt="FLY UNITY" class="h-8 object-contain">
-            <h1 class="text-base font-bold text-sky-900 border-l-2 border-sky-200 pl-3">Fly Air 문서 제너레이터</h1>
+            <img id="nav-logo" src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+            <h1 class="text-sm font-bold text-sky-900 border-l-2 border-sky-200 pl-3 hidden sm:block">Fly Air</h1>
         </div>
-        <div class="flex gap-2 flex-wrap justify-center flex-1">
+        <div class="flex gap-1.5 flex-wrap justify-center flex-1">
             <button type="button" class="doc-tab active" data-doc="deposit" onclick="switchDocType('deposit')">
                 <i class="fas fa-file-invoice mr-1"></i>1. 항공데포짓공문
             </button>
             <button type="button" class="doc-tab" data-doc="refund-full" onclick="switchDocType('refund-full')">
-                <i class="fas fa-file-contract mr-1"></i>2. 환불영수증(정식)
+                <i class="fas fa-file-contract mr-1"></i>2. 환불영수증
             </button>
             <button type="button" class="doc-tab" data-doc="refund-simple" onclick="switchDocType('refund-simple')">
-                <i class="fas fa-receipt mr-1"></i>3. 환불영수증(약식)
+                <i class="fas fa-receipt mr-1"></i>3. 환불내역서(내부)
+            </button>
+            <button type="button" class="doc-tab" data-doc="fare" onclick="switchDocType('fare')">
+                <i class="fas fa-plane mr-1"></i>4. 항공운임증명서
             </button>
         </div>
         <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded shadow flex items-center gap-2 transition font-medium text-sm shrink-0">
@@ -226,7 +248,7 @@
                 </div>
             </div>
 
-            <!-- ===== FORM: 환불영수증(약식) ===== -->
+            <!-- ===== FORM: 환불내역서(내부) ===== -->
             <div id="form-refund-simple" class="hidden">
                 <div class="mb-4">
                     <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
@@ -250,7 +272,7 @@
                     </div>
                     <div class="bg-gray-50 p-4 rounded border border-gray-200">
                         <h3 class="text-sm font-bold text-gray-800 mb-3">환불 금액 내역 (KRW)</h3>
-                        <p class="text-[11px] text-gray-500 mb-3">대한항공 환불 내역서 양식 기준 · 금액 위주 약식</p>
+                        <p class="text-[11px] text-gray-500 mb-3">내부용 환불내역서 · 금액 위주</p>
                         <div class="space-y-3">
                             <div class="grid grid-cols-2 gap-3">
                                 <div><label class="fu-label">지불 항공요금</label><input type="text" id="in_rs_paid_fare" class="fu-input text-right" oninput="handleNumberFormat(event); calcSimpleRefund()"></div>
@@ -269,6 +291,44 @@
                     <div>
                         <label class="fu-label">비고 (선택)</label>
                         <input type="text" id="in_rs_remark" class="fu-input text-xs" placeholder="환불 처리 완료 후 고객 안내용">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FORM: 항공운임증명서 ===== -->
+            <div id="form-fare" class="hidden">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-700 mb-1"><i class="fas fa-bolt text-yellow-500 mr-1"></i>빠른 양식 적용</label>
+                    <select id="preset-select-fare" class="w-full border border-gray-300 rounded p-2 text-sm font-medium bg-white" onchange="applyPresetTemplate(this.value)">
+                        <option value="fa_sample">진에어 LJ 정선군청 샘플</option>
+                        <option value="blank_fare">--- 새 양식 ---</option>
+                    </select>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-sky-50 p-4 rounded border border-sky-200">
+                        <h3 class="text-sm font-bold text-sky-900 mb-3">문서 기본 정보</h3>
+                        <div class="space-y-3">
+                            <div><label class="fu-label">수신 (To)</label><input type="text" id="in_fa_receiver" class="fu-input" placeholder="예: 정선군청 환경과"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="fu-label">출발일 (Dep.Date)</label><input type="date" id="in_fa_depdate" class="fu-input"></div>
+                                <div><label class="fu-label">여행자 성명</label><input type="text" id="in_fa_paxname" class="fu-input" placeholder="김종범 (KIM/JONGBEOM)외 5명"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="fu-label">예약번호 (PNR)</label><input type="text" id="in_fa_pnr" class="fu-input font-mono" placeholder="(LJ) EXSO7E"></div>
+                                <div><label class="fu-label">구간 (Routing)</label><input type="text" id="in_fa_routing" class="fu-input" placeholder="인천(ICN) - 기타큐슈(KKJ) 왕복"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <h3 class="text-sm font-bold text-gray-800 mb-2">탑승자 및 항공스케줄 (GDS 복사)</h3>
+                        <textarea id="in_fa_pnr_raw" rows="7" class="fu-input font-mono text-[11px]" placeholder="EXSO7E&#10;1.KIM/JONGBEOM MR ..."></textarea>
+                    </div>
+                    <div>
+                        <label class="fu-label">비고 (Notes)</label>
+                        <textarea id="in_fa_notes" rows="2" class="fu-input text-xs">상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.</textarea>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded border border-indigo-100 text-[11px] text-indigo-700">
+                        <i class="fas fa-circle-info mr-1"></i> 미리보기 <b>운임 정보</b> 표를 클릭하면 직접 수정 가능하며, 단가×수량 합계가 자동 계산됩니다.
                     </div>
                 </div>
             </div>
@@ -342,17 +402,10 @@
                 </div>
             </div>
 
-            <!-- PAGE: 환불영수증(정식) -->
+            <!-- PAGE: 환불영수증 -->
             <div class="a4-page page-refund-full hidden-page" id="page-refund-full">
-                <div class="flex justify-between items-start mb-4 shrink-0">
-                    <div>
-                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-9 object-contain mb-1">
-                        <div id="out_rf_issuer" class="text-[13px] font-bold text-gray-600"></div>
-                    </div>
-                    <div class="text-right text-[12px] leading-relaxed">
-                        <div class="font-bold text-gray-600">발행일</div>
-                        <div class="out_common_date font-bold text-[14px]"></div>
-                    </div>
+                <div class="mb-4 shrink-0">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" alt="FLY UNITY" class="h-12 object-contain">
                 </div>
 
                 <div class="text-center mb-5 shrink-0">
@@ -408,6 +461,10 @@
 
                 <div class="mt-auto pt-6 pr-8 shrink-0 fu-signature-footer">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+                    <div class="text-right text-[12px] text-gray-600 leading-relaxed">
+                        <div><span class="font-bold text-gray-500">Issued by</span> <span id="out_rf_issuer_footer" class="font-bold text-gray-800"></span></div>
+                        <div><span class="font-bold text-gray-500">발행일</span> <span class="out_common_date font-bold text-gray-800"></span></div>
+                    </div>
                     <div class="fu-signature-line">
                         (주) 플라이 유니티
                         <span class="fu-stamp-slot">
@@ -418,18 +475,17 @@
                 </div>
             </div>
 
-            <!-- PAGE: 환불영수증(약식) - 대한항공 스타일 -->
+            <!-- PAGE: 환불내역서(내부) -->
             <div class="a4-page page-refund-simple hidden-page" id="page-refund-simple">
                 <div class="shrink-0 border-b-4 border-[#003478] pb-3 mb-5">
                     <div class="flex justify-between items-end">
                         <div>
-                            <div class="text-[#003478] text-[28px] font-black tracking-tight leading-none">환불금 안내</div>
-                            <div class="text-[13px] text-gray-500 font-bold mt-1 tracking-wider">REFUND ADVICE / RECEIPT</div>
+                            <div class="text-[#003478] text-[28px] font-black tracking-tight leading-none">환불내역서</div>
+                            <div class="text-[13px] text-gray-500 font-bold mt-1 tracking-wider">REFUND STATEMENT (INTERNAL)</div>
                         </div>
                         <div class="text-right">
                             <div class="text-[10px] text-gray-400">발행</div>
                             <div class="text-[12px] font-bold out_common_date_dot"></div>
-                            <div class="text-[10px] text-sky-700 font-bold mt-1">㈜플라이유니티</div>
                         </div>
                     </div>
                 </div>
@@ -499,12 +555,95 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PAGE: 항공운임증명서 -->
+            <div class="a4-page page-fare hidden-page" id="page-fare">
+                <div class="flex justify-between items-start mb-2 shrink-0">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw" class="h-12 object-contain" alt="FLY UNITY">
+                    <div class="text-right text-[8.5pt] text-slate-500 font-roboto">
+                        Date : <span id="out_fa_issue_dot" class="font-bold"></span><br>
+                        Ref No : FU-FARE-<span id="out_fa_ref_short" class="font-bold"></span>
+                    </div>
+                </div>
+                <div class="text-center shrink-0 border-b-2 border-slate-800 pb-2 mb-3">
+                    <h1 class="doc-title-eng font-roboto">FARE CERTIFICATE</h1>
+                    <h2 class="doc-title-kor">항공 운임 증명서</h2>
+                    <div class="text-left text-[10pt] font-bold mt-2">
+                        수신 (To) : <span id="out_fa_receiver" class="underline underline-offset-4"></span>
+                    </div>
+                </div>
+                <div class="shrink-0 mb-3">
+                    <div class="flex justify-between items-end mb-1">
+                        <h3 class="font-bold text-[10pt] text-slate-800"><i class="fas fa-user-check mr-1"></i> 여행자 정보 <span class="text-[8pt] font-normal text-slate-500 ml-1">Passenger Information</span></h3>
+                        <div class="text-[9pt] font-bold">출발일(Dep.Date) : <span id="out_fa_depdate" class="text-blue-700"></span></div>
+                    </div>
+                    <table class="info-table">
+                        <tbody>
+                            <tr><th>여행자 성명 <span class="block text-[7.5pt] text-slate-500 font-normal">Passenger Name</span></th><td class="font-bold" id="out_fa_paxname"></td></tr>
+                            <tr><th>예약번호 <span class="block text-[7.5pt] text-slate-500 font-normal">PNR No.</span></th><td class="font-bold font-roboto tracking-wide" id="out_fa_pnr"></td></tr>
+                            <tr><th>여정 <span class="block text-[7.5pt] text-slate-500 font-normal">Routing</span></th><td class="font-bold" id="out_fa_routing"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="shrink-0 mb-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="font-bold text-[10pt] text-slate-800"><i class="fas fa-won-sign mr-1"></i> 운임 정보 <span class="text-[8pt] font-normal text-slate-500 ml-1">Fare Information</span></h3>
+                        <button type="button" onclick="addFareRow()" class="no-print text-[9px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-bold hover:bg-sky-200"><i class="fas fa-plus"></i> 운임 추가</button>
+                    </div>
+                    <table class="calc-table" id="fare-table">
+                        <thead>
+                            <tr class="bg-[#eef2f9] text-[8.5pt] text-[#334155]">
+                                <th class="w-[20%]">항목 (Item)</th>
+                                <th class="w-[35%]">내용 (Description)</th>
+                                <th class="w-[15%]">단가 (Unit cost)</th>
+                                <th class="w-[10%]">수량 (Qty)</th>
+                                <th class="w-[20%]">합계 (Total)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-fare"></tbody>
+                    </table>
+                    <div class="flex border-b-2 border-slate-800 border-l border-r border-slate-300">
+                        <div class="w-[80%] bg-[#f1f5f9] font-bold text-right pr-4 py-1.5 text-[10pt] tracking-widest font-roboto text-slate-800">Grand Total (KRW)</div>
+                        <div class="w-[20%] bg-[#eff6ff] text-right pr-2 py-1.5 text-[11pt] font-black text-blue-700 font-roboto tracking-wide border-l border-slate-300"><span id="fa-grand-total">0</span></div>
+                    </div>
+                </div>
+                <div class="shrink-0 mb-3">
+                    <div class="bg-slate-50 border border-slate-300 p-2 rounded-sm mb-2">
+                        <span class="font-bold text-[9pt] text-slate-800 mr-2">비고 (Notes) :</span>
+                        <span class="text-[8.5pt] text-slate-600" id="out_fa_notes"></span>
+                    </div>
+                    <div class="text-center space-y-0.5 mb-1">
+                        <p class="font-roboto font-bold text-[8pt] text-slate-600">▶ THIS IS TO CERTIFY THAT THE ABOVE MENTIONED FARE IS CORRECT AND TRUE ACCORDING TO INT'L TRAVEL TARIFF AND REGULATION.</p>
+                        <p class="font-bold text-[9pt] text-slate-800">상기 요금은 국제항공 여행 요금표 및 규정에 의거 틀림없음을 증명합니다.</p>
+                        <p class="text-[8pt] text-slate-500">단, 정부 및 해당국의 요금 및 환율 변경 등의 사유로 변경되어 질 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col border-t border-dashed border-slate-400 pt-2 mb-4">
+                    <h3 class="font-bold text-[9.5pt] text-slate-800 mb-1">* 예약 상세 정보 (GDS Data)</h3>
+                    <div class="pnr-text flex-1" id="out_fa_pnr_raw"></div>
+                </div>
+                <div class="mt-auto pt-2 pr-8 shrink-0 fu-signature-footer">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="h-8 object-contain">
+                    <div class="text-right text-[12px] text-gray-600 leading-relaxed">
+                        <div><span class="font-bold text-gray-500">Issued by</span> <span class="font-bold text-gray-800">(주)플라이유니티</span></div>
+                        <div><span class="font-bold text-gray-500">발행일</span> <span id="out_fa_issue_kor" class="font-bold text-gray-800"></span></div>
+                    </div>
+                    <div class="fu-signature-line">
+                        (주) 플라이 유니티
+                        <span class="fu-stamp-slot">
+                            <span class="stamp-label">(직인)</span>
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" alt="직인" class="stamp-img">
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const FLY_LOGO_WIDE = "https://blogger.googleusercontent.com/img/a/AVvXsEhEFpULeLVDfwoBXtetHc7RKdxqUT_BAEnTz9ZbeFDZrJKHEMK7d-jxaGFcT_x-Zd25Ha2DmhJ62-RiL3XClK1tzWkMLOMt-2boTODKJY0reo5PjPaAClELiXDOkmRlyM1DruP58WPJTJyJPZpVP7qrn-llaZ-E34U2PJUi4N9puunD5OY2ia1J2hOAvl8=w640-h115";
         const FLY_LOGO_CLEAN = "https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000";
+        const FLY_LOGO_SQUARE = "https://blogger.googleusercontent.com/img/a/AVvXsEiBEoCyJu1HuFvHdByOoOIXy6Y40EWXQ84yoF5VsYN_d85R3crsq9pSdfxdi2pV3BaM3oPrjwim-7kXmM99YfG9sb1bTU6TlWtixfX5waEs9eUVkeTeqaSvTr28UPhj52rfv7Tc-YUR4lE902GHfNCIlWLnMEP-JPS1yFAb1gG4ji1egbK9SiSF_M3-MOw";
         const FLY_STAMP = "https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200";
 
         let currentDocType = 'deposit';
@@ -552,7 +691,20 @@
             },
             blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_hurdle: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_pax: "", fly_account: "" },
             blank_refund_full: { docType: "refund-full", date: "", rf_to: "", rf_depdate: "", rf_issuer: "(주)플라이유니티", rf_passengers: "", rf_pnr: "", rf_routing: "", rf_resinfo: "", rf_notes: "", feeItems: [{ desc: "", unit: "", qty: "1" }] },
-            blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" }
+            blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" },
+            fa_sample: {
+                docType: "fare", date: "2026-03-27",
+                fa_receiver: "정선군청 환경과", fa_depdate: "2026-05-12",
+                fa_paxname: "김종범 (KIM/JONGBEOM)외 5명", fa_pnr: "(LJ) EXSO7E",
+                fa_routing: "인천(ICN) - 기타큐슈(KKJ) 왕복",
+                fa_pnr_raw: "EXSO7E\n1.KIM/JONGBEOM MR 2.JEON/CHANYEONG MR 3.YU/JONGDEOG MR\n4.JEON/YEONGPYO MR 5.PARK/CHUNGIN MR 6.LEE/JINHO MR(영문)\n\n7 LJ 349 A 12MAY 2 ICNKKJ HK6 1545 1715 12MAY E LJ/PB3LG2\n8 LJ 350 Y 15MAY 5 KKJICN HK6 1815 1940 15MAY E LJ/PB3LG2",
+                fa_notes: "상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.",
+                faFares: [
+                    { item: "Economy Class", desc: "인천(ICN) - 기타큐슈(KKJ) 왕복", price: 247600, qty: 6 },
+                    { item: "Economy Class", desc: "발권수수료", price: 20000, qty: 6 }
+                ]
+            },
+            blank_fare: { docType: "fare", date: "", fa_receiver: "", fa_depdate: "", fa_paxname: "", fa_pnr: "", fa_routing: "", fa_pnr_raw: "", fa_notes: "", faFares: [{ item: "Economy Class", desc: "", price: 0, qty: 1 }] }
         };
 
         function showToast(message, isSuccess = true) {
@@ -583,8 +735,8 @@
             document.querySelectorAll('.doc-tab').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.doc === type);
             });
-            const forms = { deposit: 'form-deposit', 'refund-full': 'form-refund-full', 'refund-simple': 'form-refund-simple' };
-            const pages = { deposit: 'page-deposit', 'refund-full': 'page-refund-full', 'refund-simple': 'page-refund-simple' };
+            const forms = { deposit: 'form-deposit', 'refund-full': 'form-refund-full', 'refund-simple': 'form-refund-simple', fare: 'form-fare' };
+            const pages = { deposit: 'page-deposit', 'refund-full': 'page-refund-full', 'refund-simple': 'page-refund-simple', fare: 'page-fare' };
             Object.entries(forms).forEach(([key, id]) => {
                 document.getElementById(id).classList.toggle('hidden', key !== type);
             });
@@ -691,7 +843,8 @@
 
             if (currentDocType === 'deposit') updateDepositPreview();
             else if (currentDocType === 'refund-full') updateRefundFullPreview();
-            else updateRefundSimplePreview();
+            else if (currentDocType === 'refund-simple') updateRefundSimplePreview();
+            else if (currentDocType === 'fare') updateFarePreview();
         }
 
         function updateDepositPreview() {
@@ -723,12 +876,14 @@
         }
 
         function updateRefundFullPreview() {
-            const fields = ['rf_to', 'rf_passengers', 'rf_pnr', 'rf_routing', 'rf_resinfo', 'rf_notes', 'rf_issuer'];
+            const fields = ['rf_to', 'rf_passengers', 'rf_pnr', 'rf_routing', 'rf_resinfo', 'rf_notes'];
             fields.forEach(key => {
                 const val = document.getElementById(`in_${key}`)?.value || '';
                 const out = document.getElementById(`out_${key}`);
                 if (out) out.innerText = val;
             });
+            const issuerFooter = document.getElementById('out_rf_issuer_footer');
+            if (issuerFooter) issuerFooter.innerText = document.getElementById('in_rf_issuer')?.value || '(주)플라이유니티';
             const depVal = document.getElementById('in_rf_depdate')?.value;
             const depOut = document.getElementById('out_rf_depdate');
             if (depOut) {
@@ -778,31 +933,156 @@
             if (wrap) wrap.classList.toggle('hidden', !remark);
         }
 
+        function formatFareNum(num) {
+            if (num === 0) return '0';
+            return Number(num).toLocaleString('ko-KR');
+        }
+
+        function buildFareRowHtml(fare) {
+            return `
+                <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">${fare.item || 'Economy Class'}</td>
+                <td contenteditable="true" class="text-left pl-3 bg-white fa-routing-desc" data-modified="true">${fare.desc || ''}</td>
+                <td contenteditable="true" class="col-price bg-white font-roboto">${formatFareNum(fare.price || 0)}</td>
+                <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">${formatFareNum(fare.qty || 1)}</td>
+                <td class="bg-white relative">
+                    <span class="font-bold col-sum text-right pr-2 block font-roboto tracking-wide text-[9.5pt]"></span>
+                    <div class="row-ctrl no-print"><button type="button" onclick="removeFareRow(this)" class="text-red-500 hover:bg-red-50 px-1 rounded"><i class="fas fa-minus"></i></button></div>
+                </td>`;
+        }
+
+        function setFaFares(fares) {
+            const tbody = document.getElementById('tbody-fare');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            (fares && fares.length ? fares : [{ item: 'Economy Class', desc: '', price: 0, qty: 1 }]).forEach(fare => {
+                const tr = document.createElement('tr');
+                tr.className = 'fare-row';
+                tr.innerHTML = buildFareRowHtml(fare);
+                tbody.appendChild(tr);
+            });
+            calcFareTable();
+        }
+
+        function getFaFares() {
+            const fares = [];
+            document.querySelectorAll('#tbody-fare tr.fare-row').forEach(row => {
+                const cols = row.querySelectorAll('td[contenteditable="true"]');
+                fares.push({
+                    item: cols[0]?.innerText.trim() || '',
+                    desc: cols[1]?.innerText.trim() || '',
+                    price: parseNumber(cols[2]?.innerText),
+                    qty: parseNumber(cols[3]?.innerText) || 1
+                });
+            });
+            return fares;
+        }
+
+        function addFareRow() {
+            const tbody = document.getElementById('tbody-fare');
+            const tr = document.createElement('tr');
+            tr.className = 'fare-row';
+            tr.innerHTML = buildFareRowHtml({ item: 'Economy Class', desc: '내용 입력', price: 0, qty: 1 });
+            tbody.appendChild(tr);
+            calcFareTable();
+            updateFarePreview();
+        }
+
+        function removeFareRow(btn) {
+            const tbody = document.getElementById('tbody-fare');
+            if (tbody.querySelectorAll('tr.fare-row').length <= 1) {
+                showToast('최소 1개의 운임 항목이 필요합니다.', false);
+                return;
+            }
+            btn.closest('tr').remove();
+            calcFareTable();
+            updateFarePreview();
+        }
+
+        function calcFareTable() {
+            let grand = 0;
+            document.querySelectorAll('#tbody-fare tr.fare-row').forEach(row => {
+                const price = parseNumber(row.querySelector('.col-price')?.innerText);
+                const qty = parseNumber(row.querySelector('.col-qty')?.innerText) || 0;
+                const sum = price * qty;
+                const sumEl = row.querySelector('.col-sum');
+                if (sumEl) sumEl.innerText = sum > 0 ? formatFareNum(sum) : '';
+                grand += sum;
+            });
+            const gt = document.getElementById('fa-grand-total');
+            if (gt) gt.innerText = formatFareNum(grand);
+        }
+
+        function updateFarePreview() {
+            const map = {
+                fa_receiver: 'out_fa_receiver', fa_paxname: 'out_fa_paxname',
+                fa_pnr: 'out_fa_pnr', fa_routing: 'out_fa_routing'
+            };
+            for (const [inKey, outId] of Object.entries(map)) {
+                const el = document.getElementById(outId);
+                if (el) el.innerText = document.getElementById(`in_${inKey}`)?.value || '';
+            }
+            const notesEl = document.getElementById('out_fa_notes');
+            if (notesEl) notesEl.innerText = document.getElementById('in_fa_notes')?.value || '';
+            const rawEl = document.getElementById('out_fa_pnr_raw');
+            if (rawEl) rawEl.innerText = document.getElementById('in_fa_pnr_raw')?.value || '';
+
+            const depVal = document.getElementById('in_fa_depdate')?.value;
+            const depOut = document.getElementById('out_fa_depdate');
+            if (depOut) {
+                if (depVal) {
+                    const d = new Date(depVal);
+                    depOut.innerText = `${d.getFullYear()}년 ${String(d.getMonth()+1).padStart(2,'0')}월 ${String(d.getDate()).padStart(2,'0')}일`;
+                } else depOut.innerText = '';
+            }
+
+            const dateVal = document.getElementById('common_date').value;
+            if (dateVal) {
+                const d = new Date(dateVal);
+                const m = String(d.getMonth()+1).padStart(2,'0');
+                const day = String(d.getDate()).padStart(2,'0');
+                const yy = String(d.getFullYear()).slice(-2);
+                const dot = document.getElementById('out_fa_issue_dot');
+                const kor = document.getElementById('out_fa_issue_kor');
+                const ref = document.getElementById('out_fa_ref_short');
+                if (dot) dot.innerText = `${d.getFullYear()}-${m}-${day}`;
+                if (kor) kor.innerText = `${d.getFullYear()}년 ${m}월 ${day}일`;
+                if (ref) ref.innerText = `${yy}${m}${day}`;
+            }
+
+            const routing = document.getElementById('in_fa_routing')?.value || '';
+            document.querySelectorAll('.fa-routing-desc').forEach(el => {
+                if (!el.dataset.modified || el.innerText === '') el.innerText = routing;
+            });
+            calcFareTable();
+        }
+
         function applyPresetTemplate(templateKey) {
             if (templateKey.startsWith('blank')) return;
             const data = PRESET_TEMPLATES[templateKey];
             if (!data) return;
             if (data.docType) switchDocType(data.docType);
             if (data.feeItems) setFeeItems(data.feeItems);
+            if (data.faFares) setFaFares(data.faFares);
             Object.keys(data).forEach(key => {
-                if (key === 'docType' || key === 'feeItems') return;
+                if (key === 'docType' || key === 'feeItems' || key === 'faFares') return;
                 let el = document.getElementById(`in_${key}`);
                 if (!el && key === 'date') el = document.getElementById('common_date');
                 if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
             });
-            const names = { deposit: '데포짓 공문', 'refund-full': '환불영수증(정식)', 'refund-simple': '환불영수증(약식)' };
+            const names = { deposit: '데포짓 공문', 'refund-full': '환불영수증', 'refund-simple': '환불내역서(내부)', fare: '항공운임증명서' };
             showToast(`${names[data.docType] || ''} 템플릿 적용 완료!`);
         }
 
         async function saveTemplate() {
             const data = { docType: currentDocType, date: document.getElementById('common_date').value };
-            const formMap = { deposit: '#form-deposit', 'refund-full': '#form-refund-full', 'refund-simple': '#form-refund-simple' };
+            const formMap = { deposit: '#form-deposit', 'refund-full': '#form-refund-full', 'refund-simple': '#form-refund-simple', fare: '#form-fare' };
             document.querySelectorAll(`${formMap[currentDocType]} input, ${formMap[currentDocType]} textarea`).forEach(el => {
                 data[el.id.replace('in_', '')] = el.value;
             });
             if (currentDocType === 'refund-full') data.feeItems = getFeeItems();
+            if (currentDocType === 'fare') data.faFares = getFaFares();
 
-            const docNames = { deposit: '데포짓공문', 'refund-full': '환불영수증_정식', 'refund-simple': '환불영수증_약식' };
+            const docNames = { deposit: '데포짓공문', 'refund-full': '환불영수증', 'refund-simple': '환불내역서_내부', fare: '항공운임증명서' };
             const defaultFileName = `${data.date || 'draft'}_플라이유니티_${docNames[currentDocType]}_데이터.json`;
             const jsonString = JSON.stringify(data, null, 2);
 
@@ -841,8 +1121,9 @@
                     if (data.docType) switchDocType(data.docType);
                     if (data.date) document.getElementById('common_date').value = data.date;
                     if (data.feeItems) setFeeItems(data.feeItems);
+                    if (data.faFares) setFaFares(data.faFares);
                     Object.keys(data).forEach(key => {
-                        if (key === 'docType' || key === 'feeItems') return;
+                        if (key === 'docType' || key === 'feeItems' || key === 'faFares') return;
                         const el = document.getElementById(`in_${key}`);
                         if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
                     });
@@ -858,9 +1139,44 @@
             el.addEventListener('input', updateAllPreviews);
         });
 
+        document.getElementById('fare-table')?.addEventListener('blur', function(e) {
+            if (e.target.classList.contains('col-price') || e.target.classList.contains('col-qty')) {
+                const val = parseNumber(e.target.innerText);
+                e.target.innerText = val > 0 ? formatFareNum(val) : (e.target.classList.contains('col-qty') ? '1' : '0');
+                calcFareTable();
+                updateFarePreview();
+            }
+        }, true);
+
+        document.getElementById('fare-table')?.addEventListener('input', function(e) {
+            if (e.target.classList.contains('fa-routing-desc')) e.target.dataset.modified = 'true';
+            if (e.target.hasAttribute('contenteditable')) {
+                calcFareTable();
+                updateFarePreview();
+            }
+        });
+
+        document.addEventListener('paste', function(e) {
+            const target = e.target;
+            if (target.hasAttribute('contenteditable') && target.closest('#fare-table')) {
+                e.preventDefault();
+                let text = (e.clipboardData || window.clipboardData).getData('text').replace(/[\r\n]+/g, ' ').trim();
+                const selection = window.getSelection();
+                if (!selection.rangeCount) return;
+                selection.deleteFromDocument();
+                selection.getRangeAt(0).insertNode(document.createTextNode(text));
+                selection.collapseToEnd();
+                target.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        });
+
         window.onload = function() {
             document.getElementById('common_date').value = new Date().toISOString().slice(0, 10);
             setFeeItems([{ desc: '', unit: '', qty: '1' }]);
+            setFaFares([
+                { item: 'Economy Class', desc: '인천(ICN) - 기타큐슈(KKJ) 왕복', price: 247600, qty: 6 },
+                { item: 'Economy Class', desc: '발권수수료', price: 20000, qty: 6 }
+            ]);
             switchDocType('deposit');
             applyPresetTemplate('fly_cz');
         };
