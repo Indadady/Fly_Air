@@ -228,14 +228,13 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 p-4 rounded border border-gray-200">
-                        <h3 class="text-sm font-bold text-gray-800 mb-3">데포짓 및 허들 조건</h3>
+                        <h3 class="text-sm font-bold text-gray-800 mb-3">데포짓 및 취소료 조건</h3>
                         <div class="space-y-3">
                             <div class="grid grid-cols-2 gap-3">
                                 <div><label class="fu-label">1인 데포짓 (원)</label><input type="text" id="in_fly_deposit" class="fu-input font-bold text-blue-700 bg-blue-50" oninput="handleNumberFormat(event); calcFlyDeposit()"></div>
                                 <div><label class="fu-label">예치 기한</label><input type="text" id="in_fly_deposit_due" class="fu-input"></div>
                             </div>
-                            <div><label class="fu-label">허들 조건 (%)</label><input type="number" id="in_fly_hurdle" class="fu-input w-1/3 mb-2"></div>
-                            <div><label class="fu-label">취소료 규정 추가 내용 (선택)</label><textarea id="in_fly_penalty_extra" rows="2" class="fu-input" placeholder="항공사별 추가 취소료 규정 입력 (미입력 시 비노출)"></textarea></div>
+                            <div><label class="fu-label">취소료 규정 상세 (선택)</label><textarea id="in_fly_penalty_extra" rows="2" class="fu-input" placeholder="항공사별 취소료 규정 입력 (미입력 시 비노출)"></textarea></div>
                             <div><label class="fu-label">3번 항목 (기타 요청사항)</label><textarea id="in_fly_remarks" rows="2" class="fu-input"></textarea></div>
                         </div>
                     </div>
@@ -434,8 +433,7 @@
                     </p>
                     <p class="pl-5 relative">
                         <span class="absolute left-0 font-bold">2.</span>
-                        <strong>취소료 규정:</strong> 전체 좌석 취소 시 모든 DEPOSIT 금액은 일절 반환되지 않고 취소료로 징수합니다.<br>
-                        해당 FLT/CLS 계약 좌석의 <strong class="text-[15px] text-red-600"><span id="out_fly_hurdle"></span>% 허들조건</strong>이며, 미달 시 Deposit 환불 불가입니다.
+                        <strong>취소료 규정:</strong> 전체 좌석 취소 시 모든 DEPOSIT 금액은 일절 반환되지 않고 취소료로 징수합니다.
                         <span id="out_fly_penalty_extra" class="whitespace-pre-wrap block mt-1.5"></span>
                     </p>
                     <p id="fly_wrap_remarks" class="pl-5 relative">
@@ -732,7 +730,7 @@
                 docType: "deposit", date: "2026-03-27",
                 fly_receiver: "강릉 뉴동방관광", fly_ref: "담당자님", fly_sender: "대표",
                 fly_airline: "CZ", fly_title: "2026.06.17(수)~21(일) CZ 데포짓 청구 건",
-                fly_deposit: "100,000", fly_deposit_due: "2026년04월 01일(수) 15시까지", fly_hurdle: "80",
+                fly_deposit: "100,000", fly_deposit_due: "2026년04월 01일(수) 15시까지",
                 fly_penalty_extra: "",
                 fly_remarks: "예) 2026년 05월 17일까지 명단 50% 제출 조건입니다.",
                 fly_schedule: "0.20GROUPAM/CDCEGC NM0 PH2L34/CZ\n1. CZ340 GWE17JUN ICNCAN HK19 0940 1230 E 1 T2\n2. CZ3061 GSU21JUN CANICN HK19 1050 1525 E T21",
@@ -768,7 +766,7 @@
                 rs_refund_amount: "1,120,000",
                 rs_remark: ""
             },
-            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_hurdle: "", fly_penalty_extra: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_ticketfee: "", fly_pax: "", fly_account: "" },
+            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_penalty_extra: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_ticketfee: "", fly_pax: "", fly_account: "" },
             blank_refund_full: { docType: "refund-full", date: "", rf_to: "", rf_depdate: "", rf_issuer: "(주)플라이유니티", rf_passengers: "", rf_pnr: "", rf_routing: "", rf_resinfo: "", rf_notes: "", feeItems: [{ desc: "", unit: "", qty: "1" }] },
             blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" },
             fa_sample: {
@@ -1001,7 +999,7 @@
                 in_fly_receiver: ['out_fly_receiver', 'out_fly_receiver2', 'out_fly_receiver3'],
                 in_fly_ref: ['out_fly_ref'], in_fly_sender: ['out_fly_sender'],
                 in_fly_airline: ['out_fly_airline_title'], in_fly_title: ['out_fly_title'],
-                in_fly_deposit_due: ['out_fly_deposit_due'], in_fly_hurdle: ['out_fly_hurdle'],
+                in_fly_deposit_due: ['out_fly_deposit_due'],
                 in_fly_penalty_extra: ['out_fly_penalty_extra'],
                 in_fly_remarks: ['out_fly_remarks'], in_fly_schedule: ['out_fly_schedule'],
                 in_fly_fare: ['out_fly_fare'], in_fly_tax: ['out_fly_tax'], in_fly_ticketfee: ['out_fly_ticketfee'], in_fly_pax: ['out_fly_pax'],
