@@ -235,6 +235,7 @@
                                 <div><label class="fu-label">예치 기한</label><input type="text" id="in_fly_deposit_due" class="fu-input"></div>
                             </div>
                             <div><label class="fu-label">허들 조건 (%)</label><input type="number" id="in_fly_hurdle" class="fu-input w-1/3 mb-2"></div>
+                            <div><label class="fu-label">취소료 규정 추가 내용 (선택)</label><textarea id="in_fly_penalty_extra" rows="2" class="fu-input" placeholder="항공사별 추가 취소료 규정 입력 (미입력 시 비노출)"></textarea></div>
                             <div><label class="fu-label">3번 항목 (기타 요청사항)</label><textarea id="in_fly_remarks" rows="2" class="fu-input"></textarea></div>
                         </div>
                     </div>
@@ -242,9 +243,10 @@
                         <h3 class="text-sm font-bold text-gray-800 mb-3">스케줄 및 정산</h3>
                         <div class="space-y-3">
                             <div><label class="fu-label">항공 스케줄</label><textarea id="in_fly_schedule" rows="4" class="fu-input font-mono text-xs"></textarea></div>
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-2 gap-3">
                                 <div><label class="fu-label">1인 항공료</label><input type="text" id="in_fly_fare" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">TAX 등</label><input type="text" id="in_fly_tax" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
+                                <div><label class="fu-label">발권수수료 (선택)</label><input type="text" id="in_fly_ticketfee" class="fu-input" placeholder="미입력 시 비노출" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">총 인원</label><input type="number" id="in_fly_pax" class="fu-input bg-yellow-50 font-bold" oninput="calcFlyDeposit()"></div>
                             </div>
                             <div class="text-right"><span class="text-sm font-bold">총 데포짓: </span><span id="label_fly_total" class="text-lg font-black text-red-600">0</span><span class="text-sm font-bold text-red-600">원</span></div>
@@ -434,6 +436,7 @@
                         <span class="absolute left-0 font-bold">2.</span>
                         <strong>취소료 규정:</strong> 전체 좌석 취소 시 모든 DEPOSIT 금액은 일절 반환되지 않고 취소료로 징수합니다.<br>
                         해당 FLT/CLS 계약 좌석의 <strong class="text-[15px] text-red-600"><span id="out_fly_hurdle"></span>% 허들조건</strong>이며, 미달 시 Deposit 환불 불가입니다.
+                        <span id="out_fly_penalty_extra" class="whitespace-pre-wrap block mt-1.5"></span>
                     </p>
                     <p id="fly_wrap_remarks" class="pl-5 relative">
                         <span class="absolute left-0 font-bold">3.</span>
@@ -443,7 +446,7 @@
                         <span id="fly_num_schedule" class="absolute left-0 font-bold">4.</span>
                         <strong>스케줄:</strong>
                         <pre id="out_fly_schedule" class="font-mono text-[12px] bg-gray-50 p-2 mt-1 mb-1.5 whitespace-pre-wrap border border-gray-200 leading-[1.3]"></pre>
-                        <p>1인 항공료 <strong><span id="out_fly_fare"></span></strong> + TAX <strong><span id="out_fly_tax"></span></strong> (월유류세기준)</p>
+                        <p>1인 항공료 <strong><span id="out_fly_fare"></span></strong> + TAX <strong><span id="out_fly_tax"></span></strong> (월유류세기준)<span id="out_fly_ticketfee_wrap"> + 발권수수료 <strong><span id="out_fly_ticketfee"></span></strong></span></p>
                     </div>
                     <p class="pl-5 relative text-[16px]">
                         <span id="fly_num_total" class="absolute left-0 font-bold">5.</span>
@@ -730,9 +733,10 @@
                 fly_receiver: "강릉 뉴동방관광", fly_ref: "담당자님", fly_sender: "대표",
                 fly_airline: "CZ", fly_title: "2026.06.17(수)~21(일) CZ 데포짓 청구 건",
                 fly_deposit: "100,000", fly_deposit_due: "2026년04월 01일(수) 15시까지", fly_hurdle: "80",
+                fly_penalty_extra: "",
                 fly_remarks: "예) 2026년 05월 17일까지 명단 50% 제출 조건입니다.",
                 fly_schedule: "0.20GROUPAM/CDCEGC NM0 PH2L34/CZ\n1. CZ340 GWE17JUN ICNCAN HK19 0940 1230 E 1 T2\n2. CZ3061 GSU21JUN CANICN HK19 1050 1525 E T21",
-                fly_fare: "350,000", fly_tax: "120,000", fly_pax: "19",
+                fly_fare: "350,000", fly_tax: "120,000", fly_ticketfee: "", fly_pax: "19",
                 fly_account: "우리은행 1005-000-000000 주식회사 플라이유니티"
             },
             rf_sabuk: {
@@ -764,7 +768,7 @@
                 rs_refund_amount: "1,120,000",
                 rs_remark: ""
             },
-            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_hurdle: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_pax: "", fly_account: "" },
+            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_hurdle: "", fly_penalty_extra: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_ticketfee: "", fly_pax: "", fly_account: "" },
             blank_refund_full: { docType: "refund-full", date: "", rf_to: "", rf_depdate: "", rf_issuer: "(주)플라이유니티", rf_passengers: "", rf_pnr: "", rf_routing: "", rf_resinfo: "", rf_notes: "", feeItems: [{ desc: "", unit: "", qty: "1" }] },
             blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" },
             fa_sample: {
@@ -998,14 +1002,24 @@
                 in_fly_ref: ['out_fly_ref'], in_fly_sender: ['out_fly_sender'],
                 in_fly_airline: ['out_fly_airline_title'], in_fly_title: ['out_fly_title'],
                 in_fly_deposit_due: ['out_fly_deposit_due'], in_fly_hurdle: ['out_fly_hurdle'],
+                in_fly_penalty_extra: ['out_fly_penalty_extra'],
                 in_fly_remarks: ['out_fly_remarks'], in_fly_schedule: ['out_fly_schedule'],
-                in_fly_fare: ['out_fly_fare'], in_fly_tax: ['out_fly_tax'], in_fly_pax: ['out_fly_pax'],
+                in_fly_fare: ['out_fly_fare'], in_fly_tax: ['out_fly_tax'], in_fly_ticketfee: ['out_fly_ticketfee'], in_fly_pax: ['out_fly_pax'],
                 in_fly_account: ['out_fly_account']
             };
             for (const [inId, outIds] of Object.entries(map)) {
                 const val = document.getElementById(inId)?.value || '';
                 outIds.forEach(id => { const el = document.getElementById(id); if (el) el.innerText = val; });
             }
+
+            const penaltyExtra = document.getElementById('in_fly_penalty_extra')?.value.trim() || '';
+            const penaltyExtraEl = document.getElementById('out_fly_penalty_extra');
+            if (penaltyExtraEl) penaltyExtraEl.style.display = penaltyExtra === '' ? 'none' : 'block';
+
+            const ticketFee = document.getElementById('in_fly_ticketfee')?.value.trim() || '';
+            const ticketFeeWrap = document.getElementById('out_fly_ticketfee_wrap');
+            if (ticketFeeWrap) ticketFeeWrap.style.display = ticketFee === '' ? 'none' : 'inline';
+
             const remarks = document.getElementById('in_fly_remarks').value.trim();
             const wrap = document.getElementById('fly_wrap_remarks');
             const nums = { fly_num_schedule: '3.', fly_num_total: '4.', fly_num_account: '5.' };
