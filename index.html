@@ -245,6 +245,7 @@
                             <div class="grid grid-cols-2 gap-3">
                                 <div><label class="fu-label">1인 항공료</label><input type="text" id="in_fly_fare" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">TAX 등</label><input type="text" id="in_fly_tax" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
+                                <div><label class="fu-label">유류세 기준월</label><input type="month" id="in_fly_fuel_month" class="fu-input" onchange="updateAllPreviews()"></div>
                                 <div><label class="fu-label">발권수수료 (선택)</label><input type="text" id="in_fly_ticketfee" class="fu-input" placeholder="미입력 시 비노출" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">총 인원</label><input type="number" id="in_fly_pax" class="fu-input bg-yellow-50 font-bold" oninput="calcFlyDeposit()"></div>
                             </div>
@@ -444,7 +445,7 @@
                         <span id="fly_num_schedule" class="absolute left-0 font-bold">4.</span>
                         <strong>스케줄:</strong>
                         <pre id="out_fly_schedule" class="font-mono text-[12px] bg-gray-50 p-2 mt-1 mb-1.5 whitespace-pre-wrap border border-gray-200 leading-[1.3]"></pre>
-                        <p>1인 항공료 <strong><span id="out_fly_fare"></span></strong> + TAX <strong><span id="out_fly_tax"></span></strong> (월유류세기준)<span id="out_fly_ticketfee_wrap"> + 발권수수료 <strong><span id="out_fly_ticketfee"></span></strong></span></p>
+                        <p>1인 항공료 <strong><span id="out_fly_fare"></span></strong> + TAX <strong><span id="out_fly_tax"></span></strong> <span id="out_fly_fuel_month_label">(월유류세기준)</span><span id="out_fly_ticketfee_wrap"> + 발권수수료 <strong><span id="out_fly_ticketfee"></span></strong></span></p>
                     </div>
                     <p class="pl-5 relative text-[16px]">
                         <span id="fly_num_total" class="absolute left-0 font-bold">5.</span>
@@ -718,6 +719,17 @@
             return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
+        function getCurrentMonthISO() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        function formatFuelMonthLabel(monthValue) {
+            if (!monthValue) return '(월유류세기준)';
+            const [year, month] = monthValue.split('-');
+            return `(${year}년 ${parseInt(month, 10)}월 유류세 기준)`;
+        }
+
         function setIssueDateToday(updatePreview = true) {
             const el = document.getElementById('common_date');
             if (!el) return;
@@ -734,7 +746,7 @@
                 fly_penalty_extra: "",
                 fly_remarks: "예) 2026년 05월 17일까지 명단 50% 제출 조건입니다.",
                 fly_schedule: "0.20GROUPAM/CDCEGC NM0 PH2L34/CZ\n1. CZ340 GWE17JUN ICNCAN HK19 0940 1230 E 1 T2\n2. CZ3061 GSU21JUN CANICN HK19 1050 1525 E T21",
-                fly_fare: "350,000", fly_tax: "120,000", fly_ticketfee: "", fly_pax: "19",
+                fly_fare: "350,000", fly_tax: "120,000", fly_fuel_month: "", fly_ticketfee: "", fly_pax: "19",
                 fly_account: "우리은행 1005-000-000000 주식회사 플라이유니티"
             },
             rf_sabuk: {
@@ -766,7 +778,7 @@
                 rs_refund_amount: "1,120,000",
                 rs_remark: ""
             },
-            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_penalty_extra: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_ticketfee: "", fly_pax: "", fly_account: "" },
+            blank_deposit: { docType: "deposit", date: "", fly_receiver: "", fly_ref: "", fly_sender: "", fly_airline: "", fly_title: "", fly_deposit: "", fly_deposit_due: "", fly_penalty_extra: "", fly_remarks: "", fly_schedule: "", fly_fare: "", fly_tax: "", fly_fuel_month: "", fly_ticketfee: "", fly_pax: "", fly_account: "" },
             blank_refund_full: { docType: "refund-full", date: "", rf_to: "", rf_depdate: "", rf_issuer: "(주)플라이유니티", rf_passengers: "", rf_pnr: "", rf_routing: "", rf_resinfo: "", rf_notes: "", feeItems: [{ desc: "", unit: "", qty: "1" }] },
             blank_refund_simple: { docType: "refund-simple", date: "", rs_passenger: "", rs_pnr: "", rs_depdate: "", rs_routing: "", rs_airline: "대한항공 (KE)", rs_paid_fare: "", rs_paid_tax: "", rs_airline_penalty: "", rs_agency_fee: "", rs_refund_amount: "", rs_remark: "" },
             fa_sample: {
@@ -1017,6 +1029,10 @@
             const ticketFee = document.getElementById('in_fly_ticketfee')?.value.trim() || '';
             const ticketFeeWrap = document.getElementById('out_fly_ticketfee_wrap');
             if (ticketFeeWrap) ticketFeeWrap.style.display = ticketFee === '' ? 'none' : 'inline';
+
+            const fuelMonth = document.getElementById('in_fly_fuel_month')?.value || '';
+            const fuelMonthLabel = document.getElementById('out_fly_fuel_month_label');
+            if (fuelMonthLabel) fuelMonthLabel.innerText = formatFuelMonthLabel(fuelMonth);
 
             const remarks = document.getElementById('in_fly_remarks').value.trim();
             const wrap = document.getElementById('fly_wrap_remarks');
@@ -1350,6 +1366,9 @@
             ]);
             switchDocType('deposit');
             applyPresetTemplate('fly_cz');
+            const fuelMonthEl = document.getElementById('in_fly_fuel_month');
+            if (fuelMonthEl && !fuelMonthEl.value) fuelMonthEl.value = getCurrentMonthISO();
+            updateAllPreviews();
         };
     </script>
 </body>
