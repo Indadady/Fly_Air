@@ -245,7 +245,23 @@
                             <div class="grid grid-cols-2 gap-3">
                                 <div><label class="fu-label">1인 항공료</label><input type="text" id="in_fly_fare" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">TAX 등</label><input type="text" id="in_fly_tax" class="fu-input" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
-                                <div><label class="fu-label">유류세 기준월</label><input type="month" id="in_fly_fuel_month" class="fu-input" onchange="updateAllPreviews()"></div>
+                                <div><label class="fu-label">유류세 기준월</label>
+                                    <select id="in_fly_fuel_month" class="fu-input" onchange="updateAllPreviews()">
+                                        <option value="">선택</option>
+                                        <option value="01">1월</option>
+                                        <option value="02">2월</option>
+                                        <option value="03">3월</option>
+                                        <option value="04">4월</option>
+                                        <option value="05">5월</option>
+                                        <option value="06">6월</option>
+                                        <option value="07">7월</option>
+                                        <option value="08">8월</option>
+                                        <option value="09">9월</option>
+                                        <option value="10">10월</option>
+                                        <option value="11">11월</option>
+                                        <option value="12">12월</option>
+                                    </select>
+                                </div>
                                 <div><label class="fu-label">발권수수료 (선택)</label><input type="text" id="in_fly_ticketfee" class="fu-input" placeholder="미입력 시 비노출" oninput="handleNumberFormat(event); updateAllPreviews()"></div>
                                 <div><label class="fu-label">총 인원</label><input type="number" id="in_fly_pax" class="fu-input bg-yellow-50 font-bold" oninput="calcFlyDeposit()"></div>
                             </div>
@@ -719,15 +735,20 @@
             return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
-        function getCurrentMonthISO() {
-            const d = new Date();
-            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        function getCurrentFuelMonth() {
+            return String(new Date().getMonth() + 1).padStart(2, '0');
+        }
+
+        function normalizeFuelMonth(value) {
+            if (!value) return '';
+            if (String(value).includes('-')) return String(value).split('-')[1];
+            return String(parseInt(value, 10)).padStart(2, '0');
         }
 
         function formatFuelMonthLabel(monthValue) {
             if (!monthValue) return '(월유류세기준)';
-            const [year, month] = monthValue.split('-');
-            return `(${year}년 ${parseInt(month, 10)}월 유류세 기준)`;
+            const month = normalizeFuelMonth(monthValue);
+            return `(${parseInt(month, 10)}월 유류세 기준)`;
         }
 
         function setIssueDateToday(updatePreview = true) {
@@ -1239,7 +1260,10 @@
             Object.keys(data).forEach(key => {
                 if (['docType', 'feeItems', 'faFares', 'date'].includes(key)) return;
                 const el = document.getElementById(`in_${key}`);
-                if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
+                if (el) {
+                    el.value = key === 'fly_fuel_month' ? normalizeFuelMonth(data[key]) : data[key];
+                    el.dispatchEvent(new Event('input'));
+                }
             });
             setIssueDateToday(false);
             updateAllPreviews();
@@ -1309,7 +1333,10 @@
                     Object.keys(data).forEach(key => {
                         if (['docType', 'feeItems', 'faFares', 'stampSettings'].includes(key)) return;
                         const el = document.getElementById(`in_${key}`);
-                        if (el) { el.value = data[key]; el.dispatchEvent(new Event('input')); }
+                        if (el) {
+                            el.value = key === 'fly_fuel_month' ? normalizeFuelMonth(data[key]) : data[key];
+                            el.dispatchEvent(new Event('input'));
+                        }
                     });
                     updateAllPreviews();
                     showToast('파일을 불러왔습니다.');
@@ -1367,7 +1394,7 @@
             switchDocType('deposit');
             applyPresetTemplate('fly_cz');
             const fuelMonthEl = document.getElementById('in_fly_fuel_month');
-            if (fuelMonthEl && !fuelMonthEl.value) fuelMonthEl.value = getCurrentMonthISO();
+            if (fuelMonthEl && !fuelMonthEl.value) fuelMonthEl.value = getCurrentFuelMonth();
             updateAllPreviews();
         };
     </script>
